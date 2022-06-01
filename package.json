@@ -1,11 +1,15 @@
 {
   "dependencies": {
     "@rails/webpacker": "5.4.3",
+    "axios": "^0.27.2",
+    "js-logger": "^1.6.1",
+    "react-router-dom": "5.3.0",
     "tailwindcss": "1.9.6",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12"
   },
   "devDependencies": {
+    "babel-plugin-js-logger": "^1.0.17",
     "webpack-dev-server": "^3"
   }
 }
