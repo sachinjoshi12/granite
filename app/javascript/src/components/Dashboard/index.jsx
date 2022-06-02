@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+
 import { isNil, isEmpty, either } from "ramda";
 
-import Container from "components/Container";
-import Table from "components/Tasks/Table";
-import PageLoader from "components/PageLoader";
 import tasksApi from "apis/tasks";
+import Container from "components/Container";
+import PageLoader from "components/PageLoader";
+import Table from "components/Tasks/Table";
 
 const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
@@ -27,7 +28,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="w-screen h-screen">
+      <div className="h-screen w-screen">
         <PageLoader />
       </div>
     );
@@ -36,7 +37,7 @@ const Dashboard = () => {
   if (either(isNil, isEmpty)(tasks)) {
     return (
       <Container>
-        <h1 className="text-xl leading-5 text-center">
+        <h1 className="text-center text-xl leading-5">
           You have no tasks assigned 😔
         </h1>
       </Container>
