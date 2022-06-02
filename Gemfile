@@ -70,3 +70,5 @@ end
 
 gem "webpacker", "~> 5.4"
 gem 'stimulus-rails'
+gem 'react-rails'
+
