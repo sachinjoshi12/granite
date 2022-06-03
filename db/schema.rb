@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_02_172713) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_03_112941) do
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.text "content"
@@ -22,6 +24,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_02_172713) do
     t.text "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug", null: false
+    t.index ["slug"], name: "index_tasks_on_slug", unique: true
   end
 
 end

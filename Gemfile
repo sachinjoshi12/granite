@@ -73,5 +73,4 @@ group :test do
 end
 
 gem "react-rails"
-gem "stimulus-rails"
 gem "webpacker", "~> 5.4"
