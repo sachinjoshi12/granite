@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_06_111523) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_06_181709) do
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.text "content"
@@ -33,6 +33,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_06_111523) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "tasks", "users", column: "assigned_user_id"

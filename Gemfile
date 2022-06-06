@@ -72,5 +72,6 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
 end
 
+gem "bcrypt", "~> 3.1.13"
 gem "react-rails"
 gem "webpacker", "~> 5.4"
