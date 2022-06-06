@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_03_112941) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_06_111523) do
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.text "content"
@@ -25,7 +25,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_03_112941) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug", null: false
+    t.integer "assigned_user_id"
     t.index ["slug"], name: "index_tasks_on_slug", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "tasks", "users", column: "assigned_user_id"
 end

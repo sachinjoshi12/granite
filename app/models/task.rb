@@ -6,6 +6,8 @@ class Task < ApplicationRecord
   validate :slug_not_changed
 
   before_create :set_slug
+  before_validation :set_title
+  before_save :change_title
 
   private
 
@@ -25,4 +27,12 @@ class Task < ApplicationRecord
       slug_candidate = slug_count.positive? ? "#{title_slug}-#{slug_count + 1}" : title_slug
       self.slug = slug_candidate
   end
+
+    def set_title
+      self.title = "Pay electricity bill"
+    end
+
+    def change_title
+      self.title = "Pay electricity & TV bill"
+    end
 end
