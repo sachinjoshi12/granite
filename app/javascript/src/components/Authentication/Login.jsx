@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import logger from "js-logger";
+
 import authApi from "apis/auth";
 import { setAuthHeaders } from "apis/axios";
 import LoginForm from "components/Authentication/Form/LoginForm";

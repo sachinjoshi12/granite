@@ -23,6 +23,7 @@ const setAuthHeaders = (setLoading = () => null) => {
   }
   setLoading(false);
 };
+
 const handleSuccessResponse = response => {
   if (response) {
     response.success = response.status === 200;
@@ -54,4 +55,10 @@ const registerIntercepts = () => {
     handleErrorResponse(error)
   );
 };
-export { setAuthHeaders, registerIntercepts };
+
+const resetAuthTokens = () => {
+  delete axios.defaults.headers["X-Auth-Email"];
+  delete axios.defaults.headers["X-Auth-Token"];
+};
+
+export { setAuthHeaders, registerIntercepts, resetAuthTokens };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import logger from "js-logger";
 import { useParams } from "react-router-dom";
 
 import tasksApi from "apis/tasks";

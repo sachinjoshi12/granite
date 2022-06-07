@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import logger from "js-logger";
 import { isNil, isEmpty, either } from "ramda";
 
 import tasksApi from "apis/tasks";

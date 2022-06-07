@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import logger from "js-logger";
+
 import tasksApi from "apis/tasks";
 import usersApi from "apis/users";
 import Container from "components/Container";
