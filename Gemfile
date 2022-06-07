@@ -74,4 +74,6 @@ end
 
 gem "bcrypt", "~> 3.1.13"
 gem "react-rails"
+gem "simplecov", require: false, group: :test
+gem "simplecov-rcov"
 gem "webpacker", "~> 5.4"
