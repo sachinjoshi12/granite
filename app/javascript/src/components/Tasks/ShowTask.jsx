@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import logger from "js-logger";
 import { useParams, useHistory } from "react-router-dom";
 
+import commentsApi from "apis/comments";
 import tasksApi from "apis/tasks";
+import Comments from "components/Comments";
 import Container from "components/Container";
 import PageLoader from "components/PageLoader";
 
@@ -11,6 +12,8 @@ const ShowTask = () => {
   const { slug } = useParams();
   const [task, setTask] = useState([]);
   const [pageLoading, setPageLoading] = useState(true);
+  const [newComment, setNewComment] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
 
@@ -29,6 +32,22 @@ const ShowTask = () => {
     }
   };
 
+  const handleSubmit = async event => {
+    event.preventDefault();
+    setLoading(true);
+    try {
+      await commentsApi.create({
+        comment: { content: newComment, task_id: task.id },
+      });
+      fetchTaskDetails();
+      setNewComment("");
+    } catch (error) {
+      logger.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchTaskDetails();
   }, []);
@@ -39,23 +58,36 @@ const ShowTask = () => {
 
   return (
     <Container>
-      <h1 className="border-b mt-3 mb-3 border-gray-500 pb-3 pl-3 text-lg leading-5 text-gray-800">
-        <span className="text-gray-600">Task Title : </span> {task?.title}
-      </h1>
-      <div className="rounded mt-2 mb-4 bg-bb-env px-2">
-        <i
-          className="transition duration-300ease-in-out ri-edit-line cursor-pointer text-center text-2xl hover:text-bb-yellow"
-          onClick={updateTask}
-        ></i>
+      <div className="mt-10 flex justify-between text-bb-gray-600">
+        <h1 className="mt-5 mb-3 pb-3 text-lg font-bold leading-5">
+          {task?.title}
+        </h1>
+        <div className="rounded mt-2 mb-4 bg-bb-env px-2">
+          <i
+            className="transition ri-edit-line text-center text-2xl
+             duration-300 ease-in-out hover:text-bb-yellow"
+            onClick={updateTask}
+          ></i>
+        </div>
       </div>
-      <h2 className="border-b mt-3 mb-3 border-gray-500 pb-3 pl-3 text-lg leading-5 text-gray-800">
-        <span className="text-gray-600">Assigned To : </span>
+      <h2
+        className="text-md mb-3 pb-3 leading-5 text-bb-gray-600
+       text-opacity-50"
+      >
+        <span>Assigned To : </span>
         {task?.assigned_user.name}
       </h2>
       <h2 className="text-md mb-3 pb-3 leading-5 text-bb-gray-600 text-opacity-50">
         <span>Created By : </span>
         {task?.task_owner?.name}
       </h2>
+      <Comments
+        comments={task?.comments}
+        setNewComment={setNewComment}
+        handleSubmit={handleSubmit}
+        newComment={newComment}
+        loading={loading}
+      />
     </Container>
   );
 };

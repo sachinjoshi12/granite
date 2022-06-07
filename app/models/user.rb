@@ -3,7 +3,7 @@
 class User < ApplicationRecord
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   MAX_EMAIL_LENGTH = 255
-
+  has_many :comments, dependent: :destroy
   has_many :created_tasks, foreign_key: :task_owner_id, class_name: "Task"
   has_secure_password
   has_secure_token :authentication_token
