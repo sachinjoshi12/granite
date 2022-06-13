@@ -14,15 +14,6 @@ def enable_test_coverage
   end
 end
 
-def headers(user, options = {})
-  {
-    Accept: "application/json",
-    "Content_Type" => "application/json",
-    "X-Auth-Token" => user.authentication_token,
-    "X-Auth-Email" => user.email
-  }.merge(options)
-end
-
 enable_test_coverage if ENV["COVERAGE"]
 
 # Previous content of test helper as is
@@ -35,9 +26,21 @@ class ActiveSupport::TestCase
   include ActionView::Helpers::TranslationHelper
   include FactoryBot::Syntax::Methods
   # Run tests in parallel with specified workers
+  # parallelize(workers: :number_of_processors, with: :threads) unless ENV['COVERAGE']
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   # fixtures :all
 
   # Add more helper methods to be used by all tests here...
+end
+
+# previous code
+
+def headers(user, options = {})
+  {
+    Accept: "application/json",
+    "Content_Type" => "application/json",
+    "X-Auth-Token" => user.authentication_token,
+    "X-Auth-Email" => user.email
+  }.merge(options)
 end
