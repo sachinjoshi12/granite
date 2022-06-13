@@ -79,4 +79,5 @@ gem "react-rails"
 gem "simplecov", require: false, group: :test
 # gem "simplecov-rcov"
 gem "pundit"
+gem "sidekiq"
 gem "webpacker", "~> 5.4"
