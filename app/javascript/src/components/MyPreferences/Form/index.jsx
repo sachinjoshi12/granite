@@ -4,7 +4,6 @@ import classnames from "classnames";
 
 import Button from "components/Button";
 import Input from "components/Input";
-// import Select from "react-select";
 
 // const defaultTimezone = "UTC";
 

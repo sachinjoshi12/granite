@@ -4,7 +4,9 @@ const list = () => axios.get("/tasks");
 
 const show = slug => axios.get(`/tasks/${slug}`);
 
-const create = payload => axios.post("/tasks/", payload);
+const create = payload => {
+  axios.post("/tasks/", payload);
+};
 
 const update = ({ slug, payload, quiet = false }) => {
   const path = quiet ? `/tasks/${slug}?quiet` : `/tasks/${slug}`;
@@ -16,12 +18,6 @@ const destroy = ({ slug, quiet }) => {
   return axios.delete(path);
 };
 
-const tasksApi = {
-  list,
-  show,
-  create,
-  update,
-  destroy,
-};
+const tasksApi = { list, show, create, update, destroy };
 
 export default tasksApi;

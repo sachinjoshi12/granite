@@ -11,16 +11,12 @@ const Input = ({
   placeholder,
   min,
   max,
-  disabled = false,
-  required = true,
   className = "",
+  required = true,
 }) => (
   <div className="mt-6">
     {label && (
-      <label
-        className="block text-sm font-medium
-              leading-5 text-bb-gray-700"
-      >
+      <label className="block text-sm font-medium leading-5 text-bb-gray-700">
         {label}
       </label>
     )}
@@ -33,7 +29,6 @@ const Input = ({
         placeholder={placeholder}
         min={min}
         max={max}
-        disabled={disabled}
         className={classnames(
           "transition border focus:outline-none focus:shadow-outline-blue block w-full appearance-none rounded-md border-gray-300 px-3 py-2 placeholder-gray-400 duration-150 ease-in-out focus:border-blue-300 sm:text-sm sm:leading-5",
           [className]
@@ -52,6 +47,7 @@ Input.propTypes = {
   required: PropTypes.bool,
   min: PropTypes.number,
   max: PropTypes.number,
+  className: PropTypes.string,
 };
 
 export default Input;

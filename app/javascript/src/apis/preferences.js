@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const show = () => axios.get("/preference");
+const show = () => axios.get("/preferences");
 
-const mail = ({ payload }) => axios.patch(`/preference//mail`, payload);
+const mail = ({ payload }) => axios.patch(`/preferences/mail`, payload);
 
-const update = ({ payload }) => axios.put("/preference", payload);
+const update = ({ payload }) => axios.put("/preferences", payload);
 
 const preferencesApi = {
   show,

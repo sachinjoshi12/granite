@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import logger from "js-logger";
+
 import preferencesApi from "apis/preferences";
 import Container from "components/Container";
 import PageLoader from "components/PageLoader";
@@ -50,9 +52,10 @@ const MyPreferences = () => {
   const fetchPreferenceDetails = async () => {
     try {
       const { data } = await preferencesApi.show();
-      setNotificationDeliveryHour(data.preference.notification_delivery_hour);
-      setReceiveEmail(data.preference.receive_email);
-      setPreferenceId(data.preference.id);
+
+      setNotificationDeliveryHour(data.notification_delivery_hour);
+      setReceiveEmail(data.receive_email);
+      setPreferenceId(data.id);
     } catch (error) {
       logger.error(error);
     } finally {

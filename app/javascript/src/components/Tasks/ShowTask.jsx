@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import logger from "js-logger";
 import { useParams, useHistory } from "react-router-dom";
 
 import commentsApi from "apis/comments";
@@ -89,7 +90,7 @@ const ShowTask = () => {
        text-opacity-50"
       >
         <span>Assigned To : </span>
-        {task?.assigned_user.name}
+        {task?.assigned_user?.name}
       </h2>
       <h2 className="text-md mb-3 pb-3 leading-5 text-bb-gray-600 text-opacity-50">
         <span>Created By : </span>
