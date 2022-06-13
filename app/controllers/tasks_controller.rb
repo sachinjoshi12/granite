@@ -21,6 +21,7 @@ class TasksController < ApplicationController
 
   def show
     authorize @task
+    @comments = @task.comments.order("created_at DESC")
   end
 
   def update
@@ -41,15 +42,15 @@ class TasksController < ApplicationController
       params.require(:task).permit(:title, :assigned_user_id, :progress, :status)
     end
 
+    def load_task!
+      @task = Task.find_by!(slug: params[:slug])
+    end
+
     def ensure_authorized_update_to_restricted_attrs
       is_editing_restricted_params = Task::RESTRICTED_ATTRIBUTES.any? { |a| task_params.key?(a) }
       is_not_owner = @task.task_owner_id != @current_user.id
       if is_editing_restricted_params && is_not_owner
         handle_authorization_error
       end
-    end
-
-    def load_task!
-      @task = Task.find_by!(slug: params[:slug])
     end
 end
