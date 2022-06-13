@@ -66,6 +66,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    addressable (2.8.0)
+      public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
@@ -85,6 +87,8 @@ GEM
     digest (3.1.0)
     docile (1.4.0)
     erubi (1.10.0)
+    et-orbi (1.2.7)
+      tzinfo
     execjs (2.8.1)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -93,6 +97,9 @@ GEM
       railties (>= 5.0.0)
     faker (2.21.0)
       i18n (>= 1.8.11, < 2)
+    fugit (1.5.3)
+      et-orbi (~> 1, >= 1.2.7)
+      raabro (~> 1.4)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.10.0)
@@ -106,6 +113,10 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    launchy (2.5.0)
+      addressable (~> 2.7)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
     loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -136,10 +147,12 @@ GEM
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
+    public_suffix (4.0.7)
     puma (5.6.4)
       nio4r (~> 2.0)
     pundit (2.2.0)
       activesupport (>= 3.0.0)
+    raabro (1.4.0)
     racc (1.6.0)
     rack (2.2.3.1)
     rack-proxy (0.7.2)
@@ -206,6 +219,9 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
+    sidekiq-cron (1.5.1)
+      fugit (~> 1)
+      sidekiq (>= 4.2.1)
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -259,6 +275,7 @@ DEPENDENCIES
   faker
   importmap-rails
   jbuilder
+  letter_opener
   puma (~> 5.0)
   pundit
   rails (~> 7.0.3)
@@ -266,6 +283,7 @@ DEPENDENCIES
   rubocop
   rubocop-rails
   sidekiq
+  sidekiq-cron
   simplecov
   sprockets-rails
   sqlite3 (~> 1.4)

@@ -11,11 +11,8 @@ Bundler.require(*Rails.groups)
 module Granite
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.active_job.queue_adapter = :sidekiq
-    config.load_defaults 7.0
-    config.generators do |g|
-      g.test_framework :test_unit, fixture: false
-    end
+    config.load_defaults 6.1
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -23,5 +20,10 @@ module Granite
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.generators do |g|
+      g.test_framework :test_unit, fixture: false
+    end
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end
