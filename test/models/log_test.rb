@@ -1,9 +1,6 @@
 require "test_helper"
 require "sidekiq/testing"
 
-class require "test_helper"
-require "sidekiq/testing"
-
 class LogTest < ActiveJob::TestCase
   def setup
     @task = create(:task)
