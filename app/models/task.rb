@@ -1,60 +1,43 @@
 # frozen_string_literal: true
 
-class Task < ApplicationRecord
-  MAX_TITLE_LENGTH = 125
-  RESTRICTED_ATTRIBUTES = %i[title task_owner_id assigned_user_id]
-  enum status: { unstarred: "unstarred", starred: "starred" }
-  enum progress: { pending: "pending", completed: "completed" }
-
-  belongs_to :task_owner, foreign_key: "task_owner_id", class_name: "User"
-  belongs_to :assigned_user, foreign_key: "assigned_user_id", class_name: "User"
+class User < ApplicationRecord
+  VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
+  MAX_EMAIL_LENGTH = 255
+  MAX_NAME_LENGTH = 255
+  has_many :created_tasks, foreign_key: :task_owner_id, class_name: "Task"
+  has_many :assigned_tasks, foreign_key: :assigned_user_id, class_name: "Task"
   has_many :comments, dependent: :destroy
+  has_many :user_notifications, dependent: :destroy, foreign_key: :user_id
+  has_one :preference, dependent: :destroy, foreign_key: :user_id
 
-  validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
-  validates :slug, uniqueness: true
-  validate :slug_not_changed
+  validates :name, presence: true, length: { maximum: 35 }
+  validates :email, presence: true,
+    uniqueness: { case_sensitive: false },
+    length: { maximum: MAX_EMAIL_LENGTH },
+    format: { with: VALID_EMAIL_REGEX }
+  validates :password, length: { minimum: 6 }, if: -> { password.present? }
+  validates :password_confirmation, presence: true, on: :create
 
-  before_create :set_slug
-  after_create :log_task_details
-  after_commit :log_task_details, on: :create
+  before_save :to_lowercase
+  before_destroy :assign_tasks_to_task_owners
+  before_create :build_default_preference
+  has_secure_password
+  has_secure_token :authentication_token
 
   private
 
-    def set_slug
-      title_slug = title.parameterize
-      regex_pattern = "slug #{Constants::DB_REGEX_OPERATOR} ?"
-      latest_task_slug = Task.where(
-        regex_pattern,
-        "#{title_slug}$|#{title_slug}-[0-9]+$"
-      ).order("LENGTH(slug) DESC", slug: :desc).first&.slug
-      slug_count = 0
-      if latest_task_slug.present?
-        slug_count = latest_task_slug.split("-").last.to_i
-        only_one_slug_exists = slug_count == 0
-        slug_count = 1 if only_one_slug_exists
-      end
-      slug_candidate = slug_count.positive? ? "#{title_slug}-#{slug_count + 1}" : title_slug
-      self.slug = slug_candidate
+    def to_lowercase
+      email.downcase!
     end
 
-    def slug_not_changed
-      if slug_changed? && self.persisted?
-        errors.add(:slug, t("task.slug.immutable"))
+    def assign_tasks_to_task_owners
+      tasks_whose_owner_is_not_current_user = assigned_tasks.select { |task| task.task_owner_id != id }
+      tasks_whose_owner_is_not_current_user.each do |task|
+        task.update(assigned_user_id: task.task_owner_id)
       end
     end
 
-    def self.of_status(progress)
-      if progress == :pending
-        starred = pending.starred.order("updated_at DESC")
-        unstarred = pending.unstarred.order("updated_at DESC")
-      else
-        starred = completed.starred.order("updated_at DESC")
-        unstarred = completed.unstarred.order("updated_at DESC")
-      end
-      starred + unstarred
-    end
-
-    def log_task_details
-      TaskLoggerJob.perform_later(self)
+    def build_default_preference
+      self.build_preference(notification_delivery_hour: Constants::DEFAULT_NOTIFICATION_DELIVERY_HOUR)
     end
 end
