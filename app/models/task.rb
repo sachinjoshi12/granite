@@ -1,24 +1,22 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
-  after_create :log_task_details
   MAX_TITLE_LENGTH = 125
   RESTRICTED_ATTRIBUTES = %i[title task_owner_id assigned_user_id]
-
   enum status: { unstarred: "unstarred", starred: "starred" }
   enum progress: { pending: "pending", completed: "completed" }
 
-  has_many :comments, dependent: :destroy
   belongs_to :task_owner, foreign_key: "task_owner_id", class_name: "User"
   belongs_to :assigned_user, foreign_key: "assigned_user_id", class_name: "User"
+  has_many :comments, dependent: :destroy
 
-  validates :title, presence: true, length: { maximum: 50 }
+  validates :title, presence: true, length: { maximum: MAX_TITLE_LENGTH }
   validates :slug, uniqueness: true
   validate :slug_not_changed
 
   before_create :set_slug
-  before_validation :set_title
-  before_save :change_title
+  after_create :log_task_details
+  after_commit :log_task_details, on: :create
 
   private
 
@@ -37,14 +35,12 @@ class Task < ApplicationRecord
       end
       slug_candidate = slug_count.positive? ? "#{title_slug}-#{slug_count + 1}" : title_slug
       self.slug = slug_candidate
-  end
-
-    def set_title
-      self.title = "Pay electricity bill"
     end
 
-    def change_title
-      self.title = "Pay electricity & TV bill"
+    def slug_not_changed
+      if slug_changed? && self.persisted?
+        errors.add(:slug, t("task.slug.immutable"))
+      end
     end
 
     def self.of_status(progress)
@@ -56,12 +52,6 @@ class Task < ApplicationRecord
         unstarred = completed.unstarred.order("updated_at DESC")
       end
       starred + unstarred
-    end
-
-    def slug_not_changed
-      if slug_changed? && self.persisted?
-        errors.add(:slug, t("task.slug.immutable"))
-      end
     end
 
     def log_task_details

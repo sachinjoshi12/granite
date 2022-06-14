@@ -3,12 +3,14 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  MAX_NAME_LENGTH = 255
+  MAX_EMAIL_LENGTH = 255
+
   def setup
     @user = build(:user)
   end
 
   # embed new test cases here...
-
   def test_user_should_not_be_valid_and_saved_without_name
     @user.name = ""
     assert_not @user.valid?
@@ -91,8 +93,7 @@ class UserTest < ActiveSupport::TestCase
     @user.save!
     second_user = create(:user)
 
-    assert_not_same @user.authentication_token,
-      second_user.authentication_token
+    assert_not_same @user.authentication_token, second_user.authentication_token
   end
 
   def test_tasks_created_by_user_are_deleted_when_user_is_deleted
